@@ -25,20 +25,20 @@ public class Agent {
         }
     }
     
-    public static int getHeuristic(int[] board, int n, int N){
+    public static int getHeuristic(int[] tiles, int n, int N){
         
         int h = 0;
         int tilesInOrder = 1;
         
-        for (int i = 0; i < board.length - 1 ; i++){
-            if (board[i] == board[i+1] || board[i+1] == 0 || board[i] == 0)
+        for (int i = 0; i < tiles.length - 1 ; i++){
+            if (tiles[i] == tiles[i+1] || tiles[i+1] == 0 || tiles[i] == 0)
                 tilesInOrder++;
             else if (tilesInOrder < n){
                 tilesInOrder = 1;
                 h++;
             }
         }
-        if (board[0] == board[board.length-1] || board[0] == 0 || board[board.length-1] == 0)
+        if (tiles[0] == tiles[tiles.length-1] || tiles[0] == 0 || tiles[tiles.length-1] == 0)
             return h;
         return h+1;
     }
