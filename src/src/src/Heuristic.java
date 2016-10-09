@@ -27,9 +27,10 @@ public class Heuristic {
         int[] testCase4 = {1, 3, 1, 3, 2, 3, 1, 0, 2, 2}; // h = 8
         
         // weird situation where the heuristic has the potential to become inconsistent
-        // h = 3 but really 2 away if 0 is on a 2 square
+        // h = 3 but really we are 2 moves away if the uncovered cell is a 2
         int[] testCase5 = {1, 1, 2, 2, 2, 3, 3, 1, 3, 0}; 
         
+        // doesn't get the correct heuristic but will still be admissible
         int[] testCase6 = {1, 2, 3, 2, 1, 2, 3, 2, 1, 0}; // h = 9
         
         // n = 2, N = 5
@@ -43,20 +44,20 @@ public class Heuristic {
         int[] testCase11 = {2, 2, 3, 3, 3, 1, 1, 1, 0, 2}; // h = 1 
         int[] testCase12 = {2, 2, 3, 3, 3, 0, 1, 1, 1, 2}; // h = 0
         
-        System.out.println(evaluate(testCase1, 3, 10));
-        System.out.println(evaluate(testCase2, 3, 10));
-        System.out.println(evaluate(testCase3, 3, 10));
-        System.out.println(evaluate(testCase4, 3, 10));
-        System.out.println(evaluate(testCase5, 3, 10));
-        System.out.println(evaluate(testCase6, 3, 10));
-        System.out.println(evaluate(testCase7, 2, 5));
-        System.out.println(evaluate(testCase8, 2, 5));
-        System.out.println(evaluate(testCase9, 4, 17));
-        System.out.println(evaluate(testCase10, 4, 17));
-        
-        System.out.println(evaluate(testCase11, 3, 10));
-        System.out.println(evaluate(testCase12, 3, 10));
-        
+//        System.out.println(evaluate(testCase1, 3, 10) == 0);
+//        System.out.println(evaluate(testCase2, 3, 10) == 5); // 5
+//        System.out.println(evaluate(testCase3, 3, 10) == 1);
+//        System.out.println(evaluate(testCase4, 3, 10) == 8);
+//        System.out.println(evaluate(testCase5, 3, 10)); // 3
+        System.out.println("funny case = " +evaluate(testCase6, 3, 10));
+//        System.out.println(evaluate(testCase7, 2, 5) == 0 );
+//        System.out.println(evaluate(testCase8, 2, 5) == 1);
+//        System.out.println(evaluate(testCase9, 4, 17) == 0);
+//        System.out.println(evaluate(testCase10, 4, 17) == 5);
+//        
+//        System.out.println(evaluate(testCase11, 3, 10) == 1);
+//        System.out.println(evaluate(testCase12, 3, 10) == 0);
+//        
 //        for (int i : getMoves(board, 9, 10)){
 //            System.out.print(i+ " ");
 //        }
@@ -79,23 +80,32 @@ public class Heuristic {
             nCount = 1;
             int currentValue = tiles[i];
             
-            while ( tiles[(i + 1) % N] == currentValue ||
+            while   ( tiles[(i + 1) % N] == currentValue ||
                     ( tiles[(i + 1) % N] == 0 ) ||
-                    (tiles[i % N] == 0 && tiles[(i+1) % N] == currentValue)){ 
+                    ( tiles[i % N] == 0 && tiles[(i+1) % N] == currentValue)){ 
                 i++;
-                //System.out.println(i);
                 nCount++;
             }
             if (nCount != n){
-                //System.out.println(tiles[(i + N - 4) % N]);
+                //System.out.println(tiles[i%N]);
+                // If current position is a zero AND current position - 1 is
+                // equal to n, then 
+                // the nth tiles are sorted followed by the open cell
                 if (tiles[i%N] == 0 && tiles[(i+N-1) % N] == n){}
                 else
                     outOfPlace++;
             }
-                
+            // account for incorrectly counting a wrapped yet sorted tile
+            // when starting at index zero.  
+            // The first time the array,
+            // {1, 2, 2, 3, 3, 0, 1}, 
+            // is iterated through, the 1 at index 0 will be counted 
+            // as out of place because the algorithm doesn't wrap backwards to
+            // check sorting.  
+            // Once the iterator makes it to the end of the array, it will
+            // wrap back around and see that the 1 is in fact sorted and 
+            // will decrement the outOfPlace heuristic below. 
             if (i >= N && (nCount == n || nCount == n + 1))
-                // account for incorrectly counting a wrapped yet sorted tile
-                // when starting at index zero
                 outOfPlace--; 
             i++;
         }
