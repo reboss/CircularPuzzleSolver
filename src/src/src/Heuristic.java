@@ -44,23 +44,20 @@ public class Heuristic {
         int[] testCase11 = {2, 2, 3, 3, 3, 1, 1, 1, 0, 2}; // h = 1 
         int[] testCase12 = {2, 2, 3, 3, 3, 0, 1, 1, 1, 2}; // h = 0
         
-//        System.out.println(evaluate(testCase1, 3, 10) == 0);
-//        System.out.println(evaluate(testCase2, 3, 10) == 5); // 5
-//        System.out.println(evaluate(testCase3, 3, 10) == 1);
-//        System.out.println(evaluate(testCase4, 3, 10) == 8);
-//        System.out.println(evaluate(testCase5, 3, 10)); // 3
+        System.out.println(evaluate(testCase1, 3, 10) == 0);
+        System.out.println(evaluate(testCase2, 3, 10) == 5); // 5
+        System.out.println(evaluate(testCase3, 3, 10) == 1);
+        System.out.println(evaluate(testCase4, 3, 10) == 8);
+        System.out.println(evaluate(testCase5, 3, 10)); // 3
         System.out.println("funny case = " +evaluate(testCase6, 3, 10));
-//        System.out.println(evaluate(testCase7, 2, 5) == 0 );
-//        System.out.println(evaluate(testCase8, 2, 5) == 1);
-//        System.out.println(evaluate(testCase9, 4, 17) == 0);
-//        System.out.println(evaluate(testCase10, 4, 17) == 5);
-//        
-//        System.out.println(evaluate(testCase11, 3, 10) == 1);
-//        System.out.println(evaluate(testCase12, 3, 10) == 0);
-//        
-//        for (int i : getMoves(board, 9, 10)){
-//            System.out.print(i+ " ");
-//        }
+        System.out.println(evaluate(testCase7, 2, 5) == 0 );
+        System.out.println(evaluate(testCase8, 2, 5) == 1);
+        System.out.println(evaluate(testCase9, 4, 17) == 0);
+        System.out.println(evaluate(testCase10, 4, 17) == 5);
+        
+        System.out.println(evaluate(testCase11, 3, 10) == 1);
+        System.out.println(evaluate(testCase12, 3, 10) == 0);
+
     }
     
     /**
