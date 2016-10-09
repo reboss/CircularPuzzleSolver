@@ -18,6 +18,7 @@ public class Heuristic {
         
         int[] board = {1, 2, 3, 3, 4, 2, 2, 1, 3, 1}; 
         
+        // n = 3, N = 10
         int[] testCase1 = {1, 1, 1, 2, 2, 2, 3, 3, 3, 0}; // h = 0
         int[] testCase2 = {2, 2, 3, 3, 1, 1, 2, 1, 3, 0}; // h = 5
         int[] testCase3 = {1, 1, 3, 3, 3, 2, 2, 0, 2, 1}; // h = 1
@@ -26,13 +27,16 @@ public class Heuristic {
         int[] testCase4 = {1, 3, 1, 3, 2, 3, 1, 0, 2, 2}; // h = 8
         
         // weird situation where the heuristic has the potential to become inconsistent
-        int[] testCase5 = {1, 1, 2, 2, 2, 3, 3, 1, 3, 0}; // h = 3
+        // h = 3 but really 2 away if 0 is on a 2 square
+        int[] testCase5 = {1, 1, 2, 2, 2, 3, 3, 1, 3, 0}; 
         
         int[] testCase6 = {1, 2, 3, 2, 1, 2, 3, 2, 1, 0}; // h = 9
         
+        // n = 2, N = 5
         int[] testCase7 = {1, 1, 2, 2, 0}; // h = 0
         int[] testCase8 = {1, 1, 2, 0, 2}; // h = 1
         
+        // n = 4, N = 17
         int[] testCase9 = {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 0}; // h= 0
         int[] testCase10 = {1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 3, 3, 4, 4, 4, 3, 0}; // h= 5
         
