@@ -32,7 +32,7 @@ public class Graph {
     //Used to initilize the graph
     public Graph(){
         int [] littleTiles = getInput();
-        int h = Heuristic.evaluate(littleTiles,numberOfGroups,boardSize);   //Used to get the heuistic
+        int h = Main.evaluate(littleTiles,numberOfGroups,boardSize);   //Used to get the heuistic
         this.root = new Node(null, h, littleTiles);
         this.currentNode = root;
     }
@@ -91,7 +91,7 @@ public class Graph {
         //SHOULD USE A GET MOVE FUNCTION OR SOMETHING SIMILAR--------------------------------------
         int [] littleTiles = null;
         //-----------------------------------------------------------------------------------------
-        int h = Heuristic.evaluate(littleTiles,numberOfGroups,boardSize);   //Used to get the heuistic
+        int h = Main.evaluate(littleTiles,numberOfGroups,boardSize);   //Used to get the heuistic
         tempNode = new Node(curNode, h, littleTiles);
         return tempNode;
     }

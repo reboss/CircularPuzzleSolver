@@ -9,7 +9,7 @@ package src;
  *
  * @author reboss
  */
-public class Heuristic {
+public class Main {
 
     /**
      * @param args the command line arguments
@@ -68,46 +68,46 @@ public class Heuristic {
      * @return heuristic value; 0 if goal has been reached
      */
     public static int evaluate(int [] tiles, int n, int N){
-        
-        int i = 0;
-        int nCount;
-        int outOfPlace = 0;
-        
-        while (i < N){
-            nCount = 1;
-            int currentValue = tiles[i];
-            
-            while   ( tiles[(i + 1) % N] == currentValue ||
-                    ( tiles[(i + 1) % N] == 0 ) ||
-                    ( tiles[i % N] == 0 && tiles[(i+1) % N] == currentValue)){ 
+
+            int i = 0;
+            int nCount;
+            int outOfPlace = 0;
+
+            while (i < N){
+                nCount = 1;
+                int currentValue = tiles[i];
+
+                while   ( tiles[(i + 1) % N] == currentValue ||
+                        ( tiles[(i + 1) % N] == 0 ) ||
+                        ( tiles[i % N] == 0 && tiles[(i+1) % N] == currentValue)){ 
+                    i++;
+                    nCount++;
+                }
+                if (nCount != n){
+                    //System.out.println(tiles[i%N]);
+                    // If current position is a zero AND current position - 1 is
+                    // equal to n, then 
+                    // the nth tiles are sorted followed by the open cell
+                    if (tiles[i%N] == 0 && tiles[(i+N-1) % N] == n){}
+                    else
+                        outOfPlace++;
+                }
+                // account for incorrectly counting a wrapped yet sorted tile
+                // when starting at index zero.  
+                // The first time the array,
+                // {1, 2, 2, 3, 3, 0, 1}, 
+                // is iterated through, the 1 at index 0 will be counted 
+                // as out of place because the algorithm doesn't wrap backwards to
+                // check sorting.  
+                // Once the iterator makes it to the end of the array, it will
+                // wrap back around and see that the 1 is in fact sorted and 
+                // will decrement the outOfPlace heuristic below. 
+                if (i >= N && (nCount == n || nCount == n + 1))
+                    outOfPlace--; 
                 i++;
-                nCount++;
             }
-            if (nCount != n){
-                //System.out.println(tiles[i%N]);
-                // If current position is a zero AND current position - 1 is
-                // equal to n, then 
-                // the nth tiles are sorted followed by the open cell
-                if (tiles[i%N] == 0 && tiles[(i+N-1) % N] == n){}
-                else
-                    outOfPlace++;
-            }
-            // account for incorrectly counting a wrapped yet sorted tile
-            // when starting at index zero.  
-            // The first time the array,
-            // {1, 2, 2, 3, 3, 0, 1}, 
-            // is iterated through, the 1 at index 0 will be counted 
-            // as out of place because the algorithm doesn't wrap backwards to
-            // check sorting.  
-            // Once the iterator makes it to the end of the array, it will
-            // wrap back around and see that the 1 is in fact sorted and 
-            // will decrement the outOfPlace heuristic below. 
-            if (i >= N && (nCount == n || nCount == n + 1))
-                outOfPlace--; 
-            i++;
+            return outOfPlace;
         }
-        return outOfPlace;
-    }
     
     public static int[] getMoves(int[] board, int index, int n){
         int[] ret = new int[4];
