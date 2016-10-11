@@ -17,7 +17,7 @@ public class Board {
     private int[] bigTiles;
     private int[] smallTiles;
     private int openTile;
-    int N;
+    private int N;
     private int n;
     
     public Board(int N, int n){
