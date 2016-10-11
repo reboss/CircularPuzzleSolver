@@ -5,18 +5,36 @@
  */
 package src;
 
+import java.util.Scanner;
+
 /**
  *
  * @author reboss
  */
 public class Main {
+    private static int[] bigTiles;                                              //Used to hold the big tiles
+    private static int n;                                                       //Used to hold the number of groups for the little tiles
+    private static int N;                                                       //Used to hold the board size
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        int[] smallTiles = getInput();
+        int openTile = 0;
         
-        int[] board = {1, 2, 3, 3, 4, 2, 2, 1, 3, 1}; 
+        while (smallTiles[openTile] != 0){                                      //Used to find the position of the open tile
+            openTile++;
+        }
+        
+        Board board = new Board(bigTiles, smallTiles, openTile, N, n);          //Creates a new board
+        Heuristic heuristic = new Heuristic(N, n);
+        
+        
+        
+        
+        
+/*        int[] board = {1, 2, 3, 3, 4, 2, 2, 1, 3, 1}; 
         
         // n = 3, N = 10
         int[] testCase1 = {1, 1, 1, 2, 2, 2, 3, 3, 3, 0}; // h = 0
@@ -57,7 +75,7 @@ public class Main {
         
         System.out.println(evaluate(testCase11, 3, 10) == 1);
         System.out.println(evaluate(testCase12, 3, 10) == 0);
-
+*/
     }
     
     /**
@@ -68,46 +86,46 @@ public class Main {
      * @return heuristic value; 0 if goal has been reached
      */
     public static int evaluate(int [] tiles, int n, int N){
+        
+        int i = 0;
+        int nCount;
+        int outOfPlace = 0;
 
-            int i = 0;
-            int nCount;
-            int outOfPlace = 0;
+        while (i < N){
+            nCount = 1;
+            int currentValue = tiles[i];
 
-            while (i < N){
-                nCount = 1;
-                int currentValue = tiles[i];
-
-                while   ( tiles[(i + 1) % N] == currentValue ||
-                        ( tiles[(i + 1) % N] == 0 ) ||
-                        ( tiles[i % N] == 0 && tiles[(i+1) % N] == currentValue)){ 
-                    i++;
-                    nCount++;
-                }
-                if (nCount != n){
-                    //System.out.println(tiles[i%N]);
-                    // If current position is a zero AND current position - 1 is
-                    // equal to n, then 
-                    // the nth tiles are sorted followed by the open cell
-                    if (tiles[i%N] == 0 && tiles[(i+N-1) % N] == n){}
-                    else
-                        outOfPlace++;
-                }
-                // account for incorrectly counting a wrapped yet sorted tile
-                // when starting at index zero.  
-                // The first time the array,
-                // {1, 2, 2, 3, 3, 0, 1}, 
-                // is iterated through, the 1 at index 0 will be counted 
-                // as out of place because the algorithm doesn't wrap backwards to
-                // check sorting.  
-                // Once the iterator makes it to the end of the array, it will
-                // wrap back around and see that the 1 is in fact sorted and 
-                // will decrement the outOfPlace heuristic below. 
-                if (i >= N && (nCount == n || nCount == n + 1))
-                    outOfPlace--; 
+            while   ( tiles[(i + 1) % N] == currentValue ||
+                    ( tiles[(i + 1) % N] == 0 ) ||
+                    ( tiles[i % N] == 0 && tiles[(i+1) % N] == currentValue)){ 
                 i++;
+                nCount++;
             }
-            return outOfPlace;
+            if (nCount != n){
+                //System.out.println(tiles[i%N]);
+                // If current position is a zero AND current position - 1 is
+                // equal to n, then 
+                // the nth tiles are sorted followed by the open cell
+                if (tiles[i%N] == 0 && tiles[(i+N-1) % N] == n){}
+                else
+                    outOfPlace++;
+            }
+            // account for incorrectly counting a wrapped yet sorted tile
+            // when starting at index zero.  
+            // The first time the array,
+            // {1, 2, 2, 3, 3, 0, 1}, 
+            // is iterated through, the 1 at index 0 will be counted 
+            // as out of place because the algorithm doesn't wrap backwards to
+            // check sorting.  
+            // Once the iterator makes it to the end of the array, it will
+            // wrap back around and see that the 1 is in fact sorted and 
+            // will decrement the outOfPlace heuristic below. 
+            if (i >= N && (nCount == n || nCount == n + 1))
+                outOfPlace--; 
+            i++;
         }
+        return outOfPlace;
+    }
     
     public static int[] getMoves(int[] board, int index, int n){
         int[] ret = new int[4];
@@ -116,6 +134,51 @@ public class Main {
         ret[2] = (index + board[index]) % n;
         ret[3] = (index - board[index] + n) % n;
         return ret;
+    }
+    
+    /**
+     * Used to get the boards from standard input
+     * @return littleTiles = the array for the little tiles
+     */
+    private static int[] getInput(){
+        String[] input = new String[2];
+        int[] littleTiles;
+        int pos;
+        
+        Scanner stdin = new Scanner(System.in);
+        for (pos=0; pos<2; pos++){                      //Used to get the boards from standard inout
+            input[pos] = stdin.nextLine();
+        }
+        
+        //Used to get the big tiles
+        pos=0;
+
+        String[] bigT = input[0].split(" ");
+        N = bigT.length;                        //Sets the size of the board
+        bigTiles = new int[bigT.length];                //Creates a new array with the correct length
+
+        for (String bigT1 : bigT) {
+            bigTiles[pos] = Integer.parseInt(bigT1);
+            pos++;
+        }
+        
+        //Used to get the beginning line of the little tiles
+        pos=0;
+
+        String[] littleT = input[1].split(" ");
+        littleTiles = new int[littleT.length];          //Creates a new array with the correct length
+
+        for (String littleT1 : littleT) {
+            littleTiles[pos] = Integer.parseInt(littleT1);
+            pos++;
+        }
+        
+        for (int i=0; i<N; i++){
+            if (littleTiles[i] > n){
+                n = littleTiles[i];
+            }
+        }
+        return littleTiles;
     }
     
 }
