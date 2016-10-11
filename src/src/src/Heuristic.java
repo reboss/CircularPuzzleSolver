@@ -5,13 +5,14 @@
  */
 package src;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  *
  * @author reboss
  */
-public class Heuristic <Board> implements AStar.Functions{
+public class Heuristic implements AStar.Functions<Board>{
     
     private int N;
     private int n;
@@ -22,32 +23,32 @@ public class Heuristic <Board> implements AStar.Functions{
     }
     
     @Override
-    public double cCost(Object value) {
+    public double cCost(Board value) {
         return 1;
     }
 
     @Override
-    public double hCost(Object value) {
+    public double hCost(Board value) {
         int i = 0;
         int nCount;
         int outOfPlace = 0;
+        int[] board = value.getSmallTiles();
         
         while (i < N){
             nCount = 1;
-            int currentValue = board.getSmallTiles()[i];
+            int currentValue = board[i];
 
-            while   ( tiles[(i + 1) % N] == currentValue ||
-                    ( tiles[(i + 1) % N] == 0 ) ||
-                    ( tiles[i % N] == 0 && tiles[(i+1) % N] == currentValue)){ 
+            while   ( board[(i + 1) % N] == currentValue ||
+                    ( board[(i + 1) % N] == 0 ) ||
+                    ( board[i % N] == 0 && board[(i+1) % N] == currentValue)){ 
                 i++;
                 nCount++;
             }
             if (nCount != n){
-                //System.out.println(tiles[i%N]);
                 // If current position is a zero AND current position - 1 is
                 // equal to n, then 
                 // the nth tiles are sorted followed by the open cell
-                if (tiles[i%N] == 0 && tiles[(i+N-1) % N] == n){}
+                if (board[i%N] == 0 && board[(i+N-1) % N] == n){}
                 else
                     outOfPlace++;
             }
@@ -70,13 +71,13 @@ public class Heuristic <Board> implements AStar.Functions{
     
 
     @Override
-    public boolean goal(Object value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean goal(Board value) {
+        return hCost(value) == 0;
     }
 
     @Override
-    public List explore(Object from) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List explore(Board from) {
+        return Arrays.asList(from.getMoves());
     }
     
 }
