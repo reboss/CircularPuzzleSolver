@@ -36,6 +36,16 @@ public class Board {
         this.n = n;
     }
     
+    @Override
+    public String toString(){
+        String ret = "[";
+        for (int i=0; i<(smallTiles.length)-1; i++){
+            ret += (smallTiles[i] + " ");
+        }
+        ret += (smallTiles[smallTiles.length - 1] + "]\n");
+        return ret;
+    }
+    
     public int[] getSmallTiles(){
         return smallTiles.clone();
     }
@@ -59,7 +69,7 @@ public class Board {
             board = smallTiles.clone();
             board[openTile] = board[(openTile - bigTiles[openTile] + N) % N];
             board[(openTile - bigTiles[openTile] + N) % N] = 0;
-            moves[2] = new Board(bigTiles, board, (openTile - bigTiles[openTile] + N) % N, N, n);
+            moves[3] = new Board(bigTiles, board, (openTile - bigTiles[openTile] + N) % N, N, n);
             
         }
         board = smallTiles.clone();
