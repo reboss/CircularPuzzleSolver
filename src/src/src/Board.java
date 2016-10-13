@@ -32,6 +32,18 @@ public class Board {
         this.bigTiles = bigTiles;
         this.smallTiles = smallTiles;
         this.openTile = openTile;
+        this.N = N;
+        this.n = n;
+    }
+    
+    @Override
+    public String toString(){
+        String ret = "[";
+        for (int i=0; i<(smallTiles.length)-1; i++){
+            ret += (smallTiles[i] + " ");
+        }
+        ret += (smallTiles[smallTiles.length - 1] + "]\n");
+        return ret;
     }
     
     public int[] getSmallTiles(){
@@ -41,30 +53,37 @@ public class Board {
     public Board[] getMoves(){
         Board[] moves;
         int[] board;
+
         if (bigTiles[openTile] == 1){
             moves = new Board[2];
         }
+
         else{ 
             moves = new Board[4];
+
             board = smallTiles.clone();
             board[openTile] = board[(openTile + bigTiles[openTile]) % N];
             board[(openTile + bigTiles[openTile]) % N] = 0;
             moves[2] = new Board(bigTiles, board, (openTile + bigTiles[openTile]) % N, N, n);
+
             board = smallTiles.clone();
             board[openTile] = board[(openTile - bigTiles[openTile] + N) % N];
             board[(openTile - bigTiles[openTile] + N) % N] = 0;
-            moves[2] = new Board(bigTiles, board, (openTile - bigTiles[openTile] + N) % N, N, n);
+            moves[3] = new Board(bigTiles, board, (openTile - bigTiles[openTile] + N) % N, N, n);
             
         }
         board = smallTiles.clone();
         board[openTile] = board[(openTile + 1) % N];
         board[(openTile + 1) % N] = 0;
         moves[0] = new Board(bigTiles, board, (openTile + 1) % N, N, n);
+
         board = smallTiles.clone();
         board[openTile] = board[(openTile - 1 + N) % N];
         board[(openTile - 1 + N) % N] = 0;
         moves[1] = new Board(bigTiles, board, (openTile - 1 + N) % N, N, n);
+
         Collections.shuffle(Arrays.asList(moves));
+
         return moves;
     }
     
