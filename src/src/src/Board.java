@@ -13,6 +13,35 @@ import java.util.Collections;
  * @author reboss
  */
 public class Board {
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + Arrays.hashCode(this.bigTiles);
+        hash = 37 * hash + Arrays.hashCode(this.smallTiles);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Board other = (Board) obj;
+        if (!Arrays.equals(this.bigTiles, other.bigTiles)) {
+            return false;
+        }
+        if (!Arrays.equals(this.smallTiles, other.smallTiles)) {
+            return false;
+        }
+        return true;
+    }
     
     private int[] bigTiles;
     private int[] smallTiles;
