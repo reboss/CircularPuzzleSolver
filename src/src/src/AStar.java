@@ -70,7 +70,12 @@ public class AStar<T> {
         // handle tie breakers
         @Override
         public int compare(Object o1, Object o2) {
-            return (int) Math.signum(((Node) o1).fCost() - ((Node) o2).fCost());
+            int diff = (int) Math.signum(((Node) o1).fCost() - ((Node) o2).fCost());
+            if (diff == 0) {
+                return (int) Math.signum(((Node) o1).cCost - ((Node) o2).cCost);
+            } else {
+                return diff;
+            }
         }
     } 
     
@@ -125,7 +130,7 @@ public class AStar<T> {
                     fringeSet.add(cur);
                 }
                 closedSet.add(explore);
-            }     
+            }
         }
         
         // No solution.
