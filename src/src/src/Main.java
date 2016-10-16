@@ -5,8 +5,11 @@
  */
 package src;
 
+import src.Searching.AStar;
 import java.util.Scanner;
 import java.util.List;
+import src.Searching.RBFS;
+import src.Searching.SearchAlgorithm;
 
 /**
  *
@@ -23,7 +26,7 @@ public class Main {
     public static void main(String[] args) {
         int[] smallTiles = getInput();
         int openTile = 0;
-        List solution;
+        List<Board> solution;
         
         while (smallTiles[openTile] != 0){                                      //Used to find the position of the open tile
             openTile++;
@@ -31,10 +34,10 @@ public class Main {
         
         Board board = new Board(bigTiles, smallTiles, openTile, N, n);          //Creates a new board
         Heuristic heuristic = new Heuristic(N, n);
-        AStar aStar = new AStar(heuristic);
+        SearchAlgorithm<Board> search = new RBFS(heuristic);
         
         //The solution only checks if the numbers are grouped and not in order
-        solution = aStar.findSolution(board);
+        solution = search.findSolution(board);
         printSolution(solution);
     }
     
