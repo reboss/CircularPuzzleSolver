@@ -5,9 +5,9 @@
  */
 package src;
 
-import src.Searching.AStar;
 import java.util.Scanner;
 import java.util.List;
+import src.Searching.AStar;
 import src.Searching.RBFS;
 import src.Searching.SearchAlgorithm;
 
@@ -16,26 +16,26 @@ import src.Searching.SearchAlgorithm;
  * @author reboss
  */
 public class Main {
-    private static int[] bigTiles;                                              //Used to hold the big tiles
-    private static int n;                                                       //Used to hold the number of groups for the little tiles
-    private static int N;                                                       //Used to hold the board size
+    private static int[] bigTiles = {1,2,3,4,1,2,3,1,2,3};                                              //Used to hold the big tiles
+    private static int n = 3;                                                       //Used to hold the number of groups for the little tiles
+    private static int N = 10;                                                       //Used to hold the board size
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int[] smallTiles = getInput();
+        int[] smallTiles = test(); //getInput();
         int openTile = 0;
         List<Board> solution;
-        
+
         while (smallTiles[openTile] != 0){                                      //Used to find the position of the open tile
             openTile++;
         }
-        
+
         Board board = new Board(bigTiles, smallTiles, openTile, N, n);          //Creates a new board
         Heuristic heuristic = new Heuristic(N, n);
         SearchAlgorithm<Board> search = new RBFS(heuristic);
-        
+
         //The solution only checks if the numbers are grouped and not in order
         solution = search.findSolution(board);
         printSolution(solution);
@@ -87,8 +87,19 @@ public class Main {
     }
     
     private static void printSolution(List solution){
-        for (int i = 0; i<solution.size(); i++){
-            System.out.print(solution.get(i));
+        if (solution == null){
+            System.out.println("There is no solution");
+        }
+        else{
+            for (int i = 0; i<solution.size(); i++){
+                System.out.print(solution.get(i));
+            }
         }
     }
+    
+    private static int[] test(){
+        int[] littleTiles = new int[] {1,1,1,3,2,2,3,3,0,2};
+        return littleTiles;
+    }
+
 }
