@@ -82,7 +82,6 @@ public class Board {
     public Board[] getMoves(){
         Board[] moves;
         int[] board;
-
         if (bigTiles[openTile] == 1){
             moves = new Board[2];
         }
@@ -116,5 +115,8 @@ public class Board {
         return moves;
     }
     
+    public int getOpenTile(){
+        return openTile;
+    }
     
 }

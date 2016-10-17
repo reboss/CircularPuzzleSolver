@@ -7,7 +7,7 @@ package src.Tests;
 
 import java.util.ArrayList;
 import java.util.List;
-import src.AStar;
+import src.Searching.AStar;
 
 /**
  *
