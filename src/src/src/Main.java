@@ -16,7 +16,8 @@ import src.Searching.SearchAlgorithm;
  * @author reboss
  */
 public class Main {
-    private static int[] bigTiles = {1,2,3,4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 5};                                              //Used to hold the big tiles
+    //private static int[] bigTiles = {1, 2, 3, 1, 4, 2, 3, 4, 1, 2, 3, 1, 4, 2, 3, 4, 5};                                              //Used to hold the big tiles
+    private static int[] bigTiles = {1, 2, 3, 1, 2, 3, 1, 2, 3, 4};                                              //Used to hold the big tiles
     private static int n = 3;                                                       //Used to hold the number of groups for the little tiles
     private static int N = 10;                                                       //Used to hold the board size
 
@@ -34,7 +35,7 @@ public class Main {
 
         Board board = new Board(bigTiles, smallTiles, openTile, N, n);          //Creates a new board
         Heuristic heuristic = new Heuristic(N, n);
-        SearchAlgorithm<Board> search = new RBFS(heuristic);
+        SearchAlgorithm<Board> search = new AStar(heuristic);
 
         //The solution only checks if the numbers are grouped and not in order
         solution = search.findSolution(board);
@@ -98,7 +99,8 @@ public class Main {
     }
     
     private static int[] test(){
-        int[] littleTiles = new int[] {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 0};
+        //int[] littleTiles = new int[] {1, 2, 4, 4, 1, 2, 3, 3, 3, 2, 3, 4, 1, 2, 1, 4, 0};
+        int[] littleTiles = new int[] {1, 2, 3, 1, 2, 3, 1, 2, 3, 0};
         return littleTiles;
     }
 
