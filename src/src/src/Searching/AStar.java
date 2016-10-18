@@ -5,6 +5,7 @@
  */
 package src.Searching;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -20,10 +21,14 @@ import java.util.Queue;
  */
 public class AStar<T> extends SearchAlgorithm<T> {
     
-    private final Map<Node<T>, Integer> closedSet;
+    private final Map<T, Integer> closedSet;
     private final Queue<Node<T>> fringeSet;
+    private final Queue<Node<T>> worstSet;
         
     private final int PQ_CAPACITY = 11; // Default for Java.
+    
+    private final Runtime runtime = Runtime.getRuntime();
+    private SoftReference<Node<T>> nodeToPrune = new SoftReference(null);
     
     private class NodeCompartor implements Comparator {
         
@@ -39,11 +44,22 @@ public class AStar<T> extends SearchAlgorithm<T> {
         }
     } 
     
+        
+    private class WorstNodeCompartor implements Comparator {
+        
+        // handle tie breakers
+        @Override
+        public int compare(Object o1, Object o2) {
+            return (int) Math.signum(((Node) o2).getFCost() - ((Node) o1).getFCost());
+        }
+    } 
+    
     
     public AStar(Functions functions) {
         super(functions);
         this.closedSet = new HashMap<>();
         this.fringeSet = new PriorityQueue<>(this.PQ_CAPACITY, new AStar.NodeCompartor());
+        this.worstSet = new PriorityQueue<>(this.PQ_CAPACITY, new AStar.WorstNodeCompartor());
     }
     
     @Override
@@ -54,18 +70,29 @@ public class AStar<T> extends SearchAlgorithm<T> {
         fringeSet.add(new Node(start, null, 0, 0));
         while (fringeSet.size() > 0) {
             Node<T> explore = fringeSet.poll();
-            if (!closedSet.containsKey(explore)) {
+            if (!closedSet.containsKey(explore.value)) {
                 if (functions.goal(explore.value)) {
                     return buildSolution(explore);
                 }      
                 List<T> toExplore = functions.explore(explore.value);
                 for (T value : toExplore) {
+                    if (runtime.freeMemory() < 0.10 * runtime.totalMemory() && nodeToPrune.get() == null) {
+                        Node<T> tempReference = worstSet.poll();
+                        System.out.println("Proposing node with cost " + tempReference.getFCost() + " gets removed.  New max is: " + worstSet.peek().getFCost());
+                        fringeSet.remove(tempReference);
+                        nodeToPrune = new SoftReference(tempReference);
+                        tempReference = null; // make sure no remaining strong references.
+                    }                    
+
+                    
+                    
                     Node<T> cur = new Node<>(value, explore, functions.hCost(value),
                                               functions.cCost(value) + explore.getCCost());
                     
                     fringeSet.add(cur);
+                    worstSet.add(cur);
                 }                
-                closedSet.put(explore, 1);
+                closedSet.put(explore.value, 1);
             }
         }
         
