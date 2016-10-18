@@ -54,7 +54,7 @@ public abstract class SearchAlgorithm<T> {
                 return false;
             }
             final Node<T> other = (Node<T>) obj;
-            return Objects.equals(this.value, other.value);
+            return Objects.equals(this.value, other.value) && this.parent.equals(other.parent);
         }
         
         @Override
