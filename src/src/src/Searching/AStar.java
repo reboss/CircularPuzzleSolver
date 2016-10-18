@@ -23,44 +23,53 @@ import java.util.Queue;
 public class AStar<T> extends SearchAlgorithm<T> {
     
     private final Map<T, Integer> closedSet;
-    private final Queue<Node<T>> fringeSet;
-    private final Queue<Node<T>> worstSet;
+    private final List<Node<T>> nodeHolder;
+    private final Queue<Integer> fringeSet;
+    private final Queue<Integer> worstSet;
         
     private final int PQ_CAPACITY = 11; // Default for Java.
+    private final int PRUNE_COUNT = 10;
+
     
     private final Runtime runtime = Runtime.getRuntime();
-    private WeakReference<Node<T>> nodeToPrune = new WeakReference(null);
-    
-    private class NodeCompartor implements Comparator {
+   
+    private class NodeComparator implements Comparator {
+        
+        private final List<Node<T>> nodeHolder;
+        private final boolean invert;
+        
+        public NodeComparator(List<Node<T>> nodeHolder, boolean invert) {
+            this.nodeHolder = nodeHolder;
+            this.invert = invert;
+        }
         
         // handle tie breakers
         @Override
         public int compare(Object o1, Object o2) {
-            int diff = (int) Math.signum(((Node) o1).getFCost() - ((Node) o2).getFCost());
+            int multiplier = invert ? -1 : 1;
+            Node<T> n1 = this.nodeHolder.get(((Integer) o1));
+            Node<T> n2 = this.nodeHolder.get(((Integer) o2));
+            
+            if (n1 == null)
+                return -1;
+            if (n2 == null)
+                return 1;
+            
+            int diff = (int) Math.signum(n1.getFCost() - n2.getFCost()) * multiplier;
             if (diff == 0) {
-                return (int) Math.signum(((Node) o1).getCCost() - ((Node) o2).getCCost());
+                return (int) Math.signum(n1.getCCost() - n2.getCCost()) * multiplier;
             } else {
                 return diff;
             }
         }
     } 
     
-        
-    private class WorstNodeCompartor implements Comparator {
-        
-        // handle tie breakers
-        @Override
-        public int compare(Object o1, Object o2) {
-            return (int) Math.signum(((Node) o2).getFCost() - ((Node) o1).getFCost());
-        }
-    } 
-    
-    
     public AStar(Functions functions) {
         super(functions);
         this.closedSet = new HashMap<>();
-        this.fringeSet = new PriorityQueue<>(this.PQ_CAPACITY, new AStar.NodeCompartor());
-        this.worstSet = new PriorityQueue<>(this.PQ_CAPACITY, new AStar.WorstNodeCompartor());
+        this.nodeHolder = new ArrayList<>();
+        this.fringeSet = new PriorityQueue<>(this.PQ_CAPACITY, new AStar.NodeComparator(this.nodeHolder, false));
+        this.worstSet = new PriorityQueue<>(this.PQ_CAPACITY, new AStar.NodeComparator(this.nodeHolder, true));
     }
     
     @Override
@@ -68,30 +77,36 @@ public class AStar<T> extends SearchAlgorithm<T> {
         this.closedSet.clear();
         this.fringeSet.clear();
         
-        fringeSet.add(new Node(start, null, 0, 0));
+        nodeHolder.add(new Node(start, null, 0, 0));
+        fringeSet.add(nodeHolder.size() - 1);
         while (fringeSet.size() > 0) {
-            Node<T> explore = fringeSet.poll();
-            if (!closedSet.containsKey(explore.value)) {
+            int explore_pos = fringeSet.poll();
+            Node<T> explore = nodeHolder.get(explore_pos);
+                
+            if (explore != null && !closedSet.containsKey(explore.value)) {
                 if (functions.goal(explore.value)) {
                     return buildSolution(explore);
                 }      
                 List<T> toExplore = functions.explore(explore.value);
                 for (T value : toExplore) {
-                    while (runtime.freeMemory() < 0.25 * runtime.totalMemory() && nodeToPrune.get() == null) {
-                        Node<T> tempReference = worstSet.poll();
-                        System.out.println("Proposing node with cost " + tempReference.getFCost() + " gets removed.  New max is: " + worstSet.peek().getFCost());
-                        fringeSet.remove(tempReference);
-                        nodeToPrune = new WeakReference(tempReference);
-                        tempReference = null; // make sure no remaining strong references.
-                    }                    
-
-                    
+                    System.out.println(runtime.freeMemory());
+                    while (runtime.freeMemory() < 0.10 * runtime.totalMemory()) {
+                        for (int i=0; i<PRUNE_COUNT; i++) {
+                            int remove_pos = worstSet.poll();
+                            Node<T> nodeToRemove = nodeHolder.get(remove_pos);
+                            System.out.println("Proposing node with cost " + nodeToRemove.getFCost() + " gets removed.");
+                            nodeHolder.set(remove_pos, null);
+                        }                        
+                    }                                   
                     
                     Node<T> cur = new Node<>(value, explore, functions.hCost(value),
                                               functions.cCost(value) + explore.getCCost());
                     
-                    fringeSet.add(cur);
-                    worstSet.add(cur);
+                    nodeHolder.add(cur);
+                    int new_pos = nodeHolder.size() - 1;
+                    
+                    fringeSet.add(new_pos);
+                    worstSet.add(new_pos);
                 }                
                 closedSet.put(explore.value, 1);
             }
