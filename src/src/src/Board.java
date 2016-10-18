@@ -115,6 +115,24 @@ public class Board {
         return moves;
     }
     
+    public boolean isSorted(){
+        int current = 1;
+        int count = 0;
+        int position = (openTile + 1) % N;
+        for (int i = 0; i < n; i++){
+            count = 0;
+            while (smallTiles[position] == current){
+                position = (position + 1) % N;
+                count++;
+            }
+            if (count < n){
+                return false;
+            }
+            current++;
+        }
+        return true;
+    }
+    
     public int getOpenTile(){
         return openTile;
     }

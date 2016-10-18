@@ -89,7 +89,7 @@ public class AStar<T> extends SearchAlgorithm<T> {
                 }      
                 List<T> toExplore = functions.explore(explore.value);
                 for (T value : toExplore) {
-                    System.out.println(runtime.freeMemory());
+                    //System.out.println(runtime.freeMemory());
                     while (runtime.freeMemory() < 0.10 * runtime.totalMemory()) {
                         for (int i=0; i<PRUNE_COUNT; i++) {
                             int remove_pos = worstSet.poll();

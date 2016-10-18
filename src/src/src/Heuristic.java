@@ -88,29 +88,12 @@ public class Heuristic implements SearchAlgorithm.Functions<Board>{
 
     @Override
     public boolean goal(Board value) {
-        if (hCost(value) == 0){
-            return correctOrder(value);
-        }
-        return false;
+        return value.isSorted();
     }
 
     @Override
     public List explore(Board from) {
         return Arrays.asList(from.getMoves());
     }
-    
-    private boolean correctOrder(Board value){
-        int[] board = value.getSmallTiles();
-        int boardPos = value.getOpenTile() + 1;
-        
-        for (int pos=0; pos<N; pos++){
-            if (board[boardPos % N] != correctOrder[pos]){
-                return false;
-            }
-            boardPos++;
-        }
-        
-        return true;
-    }
-    
 }
+ 

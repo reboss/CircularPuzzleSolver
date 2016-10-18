@@ -16,10 +16,10 @@ import src.Searching.SearchAlgorithm;
  * @author reboss
  */
 public class Main {
-    //private static int[] bigTiles = {1, 2, 3, 1, 4, 2, 3, 4, 1, 2, 3, 1, 4, 2, 3, 4, 5};                                              //Used to hold the big tiles
-    private static int[] bigTiles = {1, 2, 3, 1, 2, 3, 1, 2, 3, 4};                                              //Used to hold the big tiles
-    private static int n = 3;                                                       //Used to hold the number of groups for the little tiles
-    private static int N = 10;                                                       //Used to hold the board size
+    private static int[] bigTiles = {1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,5};   //Used to hold the big tiles
+    //private static int[] bigTiles = {1, 2, 3, 1, 2, 3, 1, 2, 3, 4};                                              //Used to hold the big tiles
+    private static int n = 4;                                                       //Used to hold the number of groups for the little tiles
+    private static int N = 17;                                                       //Used to hold the board size
 
     /**
      * @param args the command line arguments
@@ -99,9 +99,11 @@ public class Main {
     }
     
     private static int[] test(){
-        //int[] littleTiles = new int[] {1, 2, 4, 4, 1, 2, 3, 3, 3, 2, 3, 4, 1, 2, 1, 4, 0};
-        int[] littleTiles = new int[] {1, 2, 3, 1, 2, 3, 1, 2, 3, 0};
+        int[] littleTiles = new int[] {1, 2, 4, 4, 1, 2, 3, 3, 3, 2, 3, 4, 1, 2, 1, 4, 0};
+        //int[] littleTiles = new int[] {1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,0};
+        //int[] littleTiles = new int[] {0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4};
+        //int [] littleTiles = new int[] {1, 1, 1, 2, 2, 2, 0, 3, 3, 3 };
+        //int[] littleTiles = new int[] {1, 2, 3, 1, 2, 3, 1, 2, 3, 0};
         return littleTiles;
     }
-
 }
