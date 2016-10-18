@@ -8,6 +8,7 @@ package src;
 import src.Searching.SearchAlgorithm;
 import java.util.Arrays;
 import java.util.List;
+import src.Searching.SearchAlgorithm;
 
 /**
  *
@@ -17,10 +18,24 @@ public class Heuristic implements SearchAlgorithm.Functions<Board>{
     
     private int N;
     private int n;
+    private int[] correctOrder;
     
     public Heuristic(int N, int n){
         this.N = N;
         this.n = n;
+        this.correctOrder = new int[N];
+
+        int num = 1;
+        int pos = 0;
+        
+        while (pos<(N-1)){
+            for (int j=0; j<n; j++){
+                correctOrder[pos] = num;
+                pos++;
+            }
+            num++;
+        }
+        correctOrder[N-1] = 0;
     }
     
     @Override
@@ -73,12 +88,29 @@ public class Heuristic implements SearchAlgorithm.Functions<Board>{
 
     @Override
     public boolean goal(Board value) {
-        return hCost(value) == 0;
+        if (hCost(value) == 0){
+            return correctOrder(value);
+        }
+        return false;
     }
 
     @Override
     public List explore(Board from) {
         return Arrays.asList(from.getMoves());
+    }
+    
+    private boolean correctOrder(Board value){
+        int[] board = value.getSmallTiles();
+        int boardPos = value.getOpenTile() + 1;
+        
+        for (int pos=0; pos<N; pos++){
+            if (board[boardPos % N] != correctOrder[pos]){
+                return false;
+            }
+            boardPos++;
+        }
+        
+        return true;
     }
     
 }
