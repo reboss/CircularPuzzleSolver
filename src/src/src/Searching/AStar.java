@@ -7,7 +7,9 @@ package src.Searching;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -18,7 +20,7 @@ import java.util.Queue;
  */
 public class AStar<T> extends SearchAlgorithm<T> {
     
-    private final List<Node<T>> closedSet;
+    private final Map<Node<T>, Integer> closedSet;
     private final Queue<Node<T>> fringeSet;
         
     private final int PQ_CAPACITY = 11; // Default for Java.
@@ -40,7 +42,7 @@ public class AStar<T> extends SearchAlgorithm<T> {
     
     public AStar(Functions functions) {
         super(functions);
-        this.closedSet = new ArrayList<>();
+        this.closedSet = new HashMap<>();
         this.fringeSet = new PriorityQueue<>(this.PQ_CAPACITY, new AStar.NodeCompartor());
     }
     
@@ -52,7 +54,7 @@ public class AStar<T> extends SearchAlgorithm<T> {
         fringeSet.add(new Node(start, null, 0, 0));
         while (fringeSet.size() > 0) {
             Node<T> explore = fringeSet.poll();
-            if (!closedSet.contains(explore)) {
+            if (!closedSet.containsKey(explore)) {
                 if (functions.goal(explore.value)) {
                     return buildSolution(explore);
                 }      
@@ -63,7 +65,7 @@ public class AStar<T> extends SearchAlgorithm<T> {
                     
                     fringeSet.add(cur);
                 }                
-                closedSet.add(explore);
+                closedSet.put(explore, 1);
             }
         }
         
