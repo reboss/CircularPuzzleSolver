@@ -34,7 +34,7 @@ public class Main {
         
         Board board = new Board(bigTiles, smallTiles, openTile, N, n);          //Creates a new board
         Heuristic heuristic = new Heuristic(N, n);
-        SearchAlgorithm<Board> search = new RBFS(heuristic);
+        SearchAlgorithm<Board> search = new AStar<Board>(heuristic);
         
         //The solution only checks if the numbers are grouped and not in order
         solution = search.findSolution(board);

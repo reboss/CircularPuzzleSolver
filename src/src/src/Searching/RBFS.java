@@ -44,13 +44,13 @@ public class RBFS<T> extends SearchAlgorithm<T> {
             return new RBFSReturn(node, Double.POSITIVE_INFINITY);
         
         List<Node<T>> successors = new ArrayList<>();
-        functions.explore(node.value).stream().forEach((move) -> {
+	for (T move : functions.explore(node.value)){
             double hCost = functions.hCost(move);
             double cCost = node.getCCost() + functions.cCost(move);
             
             double fCost = Math.max(cCost + hCost, node.getFCost());
             successors.add(new Node<>(move, node, hCost, cCost, fCost));
-        });
+        }
         
         if (successors.isEmpty())
             return new RBFSReturn(null, Double.POSITIVE_INFINITY);

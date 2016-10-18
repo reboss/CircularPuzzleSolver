@@ -53,7 +53,7 @@ public abstract class SearchAlgorithm<T> {
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            final Node<?> other = (Node<?>) obj;
+            final Node<T> other = (Node<T>) obj;
             return Objects.equals(this.value, other.value);
         }
         

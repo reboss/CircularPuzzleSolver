@@ -5,6 +5,7 @@
  */
 package src;
 
+import src.Searching.SearchAlgorithm;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author reboss
  */
-public class Heuristic implements AStar.Functions<Board>{
+public class Heuristic implements SearchAlgorithm.Functions<Board>{
     
     private int N;
     private int n;
