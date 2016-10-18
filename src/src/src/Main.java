@@ -16,7 +16,7 @@ import src.Searching.SearchAlgorithm;
  * @author reboss
  */
 public class Main {
-    private static int[] bigTiles = {1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,5};   //Used to hold the big tiles
+    private static int[] bigTiles = {1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1};   //Used to hold the big tiles
     //private static int[] bigTiles = {1, 2, 3, 1, 2, 3, 1, 2, 3, 4};                                              //Used to hold the big tiles
     private static int n = 4;                                                       //Used to hold the number of groups for the little tiles
     private static int N = 17;                                                       //Used to hold the board size
