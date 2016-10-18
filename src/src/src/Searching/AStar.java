@@ -6,6 +6,7 @@
 package src.Searching;
 
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class AStar<T> extends SearchAlgorithm<T> {
     private final int PQ_CAPACITY = 11; // Default for Java.
     
     private final Runtime runtime = Runtime.getRuntime();
-    private SoftReference<Node<T>> nodeToPrune = new SoftReference(null);
+    private WeakReference<Node<T>> nodeToPrune = new WeakReference(null);
     
     private class NodeCompartor implements Comparator {
         
@@ -76,11 +77,11 @@ public class AStar<T> extends SearchAlgorithm<T> {
                 }      
                 List<T> toExplore = functions.explore(explore.value);
                 for (T value : toExplore) {
-                    if (runtime.freeMemory() < 0.10 * runtime.totalMemory() && nodeToPrune.get() == null) {
+                    while (runtime.freeMemory() < 0.25 * runtime.totalMemory() && nodeToPrune.get() == null) {
                         Node<T> tempReference = worstSet.poll();
                         System.out.println("Proposing node with cost " + tempReference.getFCost() + " gets removed.  New max is: " + worstSet.peek().getFCost());
                         fringeSet.remove(tempReference);
-                        nodeToPrune = new SoftReference(tempReference);
+                        nodeToPrune = new WeakReference(tempReference);
                         tempReference = null; // make sure no remaining strong references.
                     }                    
 
