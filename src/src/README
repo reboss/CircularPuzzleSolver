@@ -1,0 +1,16 @@
+NAME
+	airberlin - solves the airberlin game
+
+SYNOPSIS
+	airberlin < inputFile
+
+DESCRIPTION
+	The airberlin executable is a utility used to solve the "airberlin"
+	game.  When ran the user will be required to enter in, first the boards
+	large tiles and next the boards small tiles.  The program will then
+	perform an SMA* search to solve the game.
+
+AUTHORS 
+	John Robbins
+	Alexander Martin
+	Delaney Waldo

@@ -69,9 +69,9 @@ public class Board {
     public String toString(){
         String ret = "[";
         for (int i= 0; i<(smallTiles.length)-1; i++){
-            ret += (smallTiles[(openTile + i) % N] + " ");
+            ret += (smallTiles[i] + " ");
         }
-        ret += (smallTiles[(openTile + smallTiles.length - 1) % N] + "]\n");
+        ret += (smallTiles[smallTiles.length - 1] + "]\n");
         return ret;
     }
     
