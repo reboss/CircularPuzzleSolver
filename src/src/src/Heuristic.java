@@ -68,18 +68,6 @@ public class Heuristic implements SearchAlgorithm.Functions<Board>{
                 else
                     outOfPlace++;
             }
-            // account for incorrectly counting a wrapped yet sorted tile
-            // when starting at index zero.  
-            // The first time the array,
-            // {1, 2, 2, 3, 3, 0, 1}, 
-            // is iterated through, the 1 at index 0 will be counted 
-            // as out of place because the algorithm doesn't wrap backwards to
-            // check sorting.  
-            // Once the iterator makes it to the end of the array, it will
-            // wrap back around and see that the 1 is in fact sorted and 
-            // will decrement the outOfPlace heuristic below. 
-            if (i >= N && (nCount == n || nCount == n + 1))
-                outOfPlace--; 
             i++;
         }
         return outOfPlace;

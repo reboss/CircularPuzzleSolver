@@ -8,7 +8,6 @@ package src;
 import java.util.Scanner;
 import java.util.List;
 import src.Searching.AStar;
-import src.Searching.RBFS;
 import src.Searching.SearchAlgorithm;
 
 /**
@@ -16,16 +15,17 @@ import src.Searching.SearchAlgorithm;
  * @author reboss
  */
 public class Main {
-    private static int[] bigTiles = {1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1};   //Used to hold the big tiles
+    private static int[] bigTiles = {1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,6,1,2,3,4,5};   //Used to hold the big tiles
     //private static int[] bigTiles = {1, 2, 3, 1, 2, 3, 1, 2, 3, 4};                                              //Used to hold the big tiles
-    private static int n = 4;                                                       //Used to hold the number of groups for the little tiles
-    private static int N = 17;                                                       //Used to hold the board size
+    private static int n;                                                       //Used to hold the number of groups for the little tiles
+    private static int N;                                                       //Used to hold the board size
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int[] smallTiles = test(); //getInput();
+        
+        int[] smallTiles = getInput();
         int openTile = 0;
         List<Board> solution;
 
@@ -35,7 +35,7 @@ public class Main {
 
         Board board = new Board(bigTiles, smallTiles, openTile, N, n);          //Creates a new board
         Heuristic heuristic = new Heuristic(N, n);
-        SearchAlgorithm<Board> search = new AStar<Board>(heuristic);
+        SearchAlgorithm<Board> search = new AStar<>(heuristic);
         
         //The solution only checks if the numbers are grouped and not in order
         solution = search.findSolution(board);
@@ -99,7 +99,7 @@ public class Main {
     }
     
     private static int[] test(){
-        int[] littleTiles = new int[] {1, 2, 4, 4, 1, 2, 3, 3, 3, 2, 3, 4, 1, 2, 1, 4, 0};
+        int[] littleTiles = new int[] {1, 2, 4, 4, 1, 2, 3, 3, 3, 2, 3, 4, 1, 2, 1, 4, 0, 5, 5, 5, 5, 5, 4, 3, 2, 1};
         //int[] littleTiles = new int[] {1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,0};
         //int[] littleTiles = new int[] {0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4};
         //int [] littleTiles = new int[] {1, 1, 1, 2, 2, 2, 0, 3, 3, 3 };

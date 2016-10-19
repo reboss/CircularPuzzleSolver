@@ -68,10 +68,10 @@ public class Board {
     @Override
     public String toString(){
         String ret = "[";
-        for (int i=0; i<(smallTiles.length)-1; i++){
-            ret += (smallTiles[i] + " ");
+        for (int i= 0; i<(smallTiles.length)-1; i++){
+            ret += (smallTiles[(openTile + i) % N] + " ");
         }
-        ret += (smallTiles[smallTiles.length - 1] + "]\n");
+        ret += (smallTiles[(openTile + smallTiles.length - 1) % N] + "]\n");
         return ret;
     }
     
