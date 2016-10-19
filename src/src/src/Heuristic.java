@@ -78,8 +78,8 @@ public class Heuristic implements SearchAlgorithm.Functions<Board>{
             // Once the iterator makes it to the end of the array, it will
             // wrap back around and see that the 1 is in fact sorted and 
             // will decrement the outOfPlace heuristic below. 
-            if (i >= N && (nCount == n || nCount == n + 1))
-                outOfPlace--; 
+//            if (i >= N && (nCount == n || nCount == n + 1))
+//                outOfPlace--; 
             i++;
         }
         return outOfPlace;
