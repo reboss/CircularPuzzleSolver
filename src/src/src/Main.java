@@ -39,6 +39,7 @@ public class Main {
         
         //The solution only checks if the numbers are grouped and not in order
         solution = search.findSolution(board);
+	System.out.println("Solution is: ");
         printSolution(solution);
     }
     

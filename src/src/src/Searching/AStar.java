@@ -28,7 +28,7 @@ public class AStar<T> extends SearchAlgorithm<T> {
     private final Queue<Integer> worstSet;
         
     private final int PQ_CAPACITY = 11; // Default for Java.
-    private final int PRUNE_COUNT = 10;
+    private final int PRUNE_COUNT = 1;
 
     
     private final Runtime runtime = Runtime.getRuntime();
@@ -57,7 +57,7 @@ public class AStar<T> extends SearchAlgorithm<T> {
             
             int diff = (int) Math.signum(n1.getFCost() - n2.getFCost()) * multiplier;
             if (diff == 0) {
-                return (int) Math.signum(n1.getCCost() - n2.getCCost()) * multiplier;
+                return (int) Math.signum(n2.getCCost() - n1.getCCost()) * multiplier;
             } else {
                 return diff;
             }
@@ -89,7 +89,7 @@ public class AStar<T> extends SearchAlgorithm<T> {
                 }      
                 List<T> toExplore = functions.explore(explore.value);
                 for (T value : toExplore) {
-                    while (runtime.freeMemory() < 0.10 * runtime.totalMemory()) {
+                    if (runtime.freeMemory() < 0.10 * runtime.totalMemory()) {
                         for (int i=0; i<PRUNE_COUNT; i++) {
                             int remove_pos = worstSet.poll();
                             
